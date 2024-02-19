@@ -1,16 +1,19 @@
 package storage
 
-import "architecture_go/services/contact/internal/domain/contact"
+import (
+	"architecture_go/services/contact/internal/domain/contact"
+	"architecture_go/services/contact/internal/domain/group"
+)
 
 type ContactRepository interface {
-	Create(contact *contact.Contact) (*contact.Contact, error)
-	GetById(contactID int) (*contact.Contact, error)
-	Update(contact *contact.Contact) error
-	Delete(contactID int) error
+	CreateContact(contact *contact.Contact) (*contact.Contact, error)
+	GetContactById(contactID int) (*contact.Contact, error)
+	UpdateContact(contact *contact.Contact) error
+	DeleteContact(contactID int) error
 }
 
 type GroupRepository interface {
-	Create(group *contact.Group) (*contact.Group, error)
-	GetById(groupID int) (*contact.Group, error)
+	CreateGroup(group *group.Group) (*group.Group, error)
+	GetGroupById(groupID int) (*group.Group, error)
 	AddContactToGroup(groupID, contactID int) error
 }

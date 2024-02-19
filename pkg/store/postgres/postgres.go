@@ -7,7 +7,11 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func Connect(cfg *configs.Config) (*sql.DB, error) {
+type Storage struct {
+	db *sql.DB
+}
+
+func Connect(cfg *configs.Config) (*Storage, error) {
 	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
@@ -19,5 +23,5 @@ func Connect(cfg *configs.Config) (*sql.DB, error) {
 		return nil, err
 	}
 
-	return db, nil
+	return &Storage{db: db}, nil
 }

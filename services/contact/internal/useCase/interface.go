@@ -1,6 +1,9 @@
 package useCase
 
-import "architecture_go/services/contact/internal/domain/contact"
+import (
+	"architecture_go/services/contact/internal/domain/contact"
+	"architecture_go/services/contact/internal/domain/group"
+)
 
 type ContactUseCase interface {
 	CreateContact(firstName, lastName, phoneNumber string) (*contact.Contact, error)
@@ -10,7 +13,7 @@ type ContactUseCase interface {
 }
 
 type GroupUseCase interface {
-	CreateGroup(name string) (*contact.Group, error)
-	GetGroupByID(groupID int) (*contact.Group, error)
+	CreateGroup(name string) (*group.Group, error)
+	GetGroupByID(groupID int) (*group.Group, error)
 	AddContactToGroup(groupID, contactID int) error
 }
