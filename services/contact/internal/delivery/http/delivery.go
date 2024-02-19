@@ -1,6 +1,7 @@
 package http
 
 import (
+	"architecture_go/services/contact/configs"
 	"architecture_go/services/contact/internal/useCase"
 	"fmt"
 	"log"
@@ -16,9 +17,10 @@ func NewContactHTTP(contactUC useCase.ContactUseCase, groupUC useCase.GroupUseCa
 	return &ContactHTTPDelivery{contactUseCase: contactUC, groupUseCase: groupUC}
 }
 
-func (d *ContactHTTPDelivery) Run(port string) {
-	fmt.Println("Delivering...")
-	err := http.ListenAndServe(port, nil)
+func (d *ContactHTTPDelivery) Run(cfg *configs.Config) {
+	addr := fmt.Sprintf(":%s", cfg.Port)
+	fmt.Println("Delivering... on port:", addr)
+	err := http.ListenAndServe(addr, nil)
 	if err != nil {
 		log.Panic("Something up with server delivering")
 	}

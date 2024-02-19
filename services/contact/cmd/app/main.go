@@ -28,5 +28,5 @@ func main() {
 	contactUseCase := contact.NewContactUseCase(&contactRepo)
 	groupUseCase := group.NewGroupUseCase(&contactRepo, &contactRepo)
 	delivery := http.NewContactHTTP(contactUseCase, groupUseCase)
-	delivery.Run()
+	delivery.Run(cfg)
 }
