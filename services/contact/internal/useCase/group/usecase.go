@@ -7,11 +7,12 @@ import (
 )
 
 type GroupUseCase struct {
-	repo storage.GroupRepository
+	contactRepo storage.Contact
+	groupRepo   storage.Group
 }
 
-func NewUseCase(repo storage.GroupRepository) useCase.GroupUseCase {
-	return &GroupUseCase{repo: repo}
+func NewGroupUseCase(contactRepo storage.Contact, groupRepo storage.Group) useCase.GroupUseCase {
+	return &GroupUseCase{contactRepo: contactRepo, groupRepo: groupRepo}
 }
 
 func (g *GroupUseCase) CreateGroup(name string) (*group.Group, error) {

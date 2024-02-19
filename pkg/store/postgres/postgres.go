@@ -25,3 +25,7 @@ func Connect(cfg *configs.Config) (*Storage, error) {
 
 	return &Storage{db: db}, nil
 }
+
+func (s *Storage) Close() {
+	s.db.Close()
+}

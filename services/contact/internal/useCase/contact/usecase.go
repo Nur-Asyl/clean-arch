@@ -8,10 +8,10 @@ import (
 )
 
 type ContactUseCase struct {
-	repo storage.ContactRepository
+	repo storage.Contact
 }
 
-func NewUseCase(repo storage.ContactRepository) useCase.ContactUseCase {
+func NewContactUseCase(repo storage.Contact) useCase.ContactUseCase {
 	return &ContactUseCase{repo: repo}
 }
 
