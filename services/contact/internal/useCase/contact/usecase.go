@@ -17,13 +17,10 @@ func NewContactUseCase(contactRepo storage.Contact) *ContactUseCase {
 	}
 }
 
-func (uc *ContactUseCase) CreateContact(ctx context.Context, fullName, phoneNumber string) (*contact.Contact, error) {
-	newContact := &contact.Contact{
-		FullName:    fullName,
-		PhoneNumber: phoneNumber,
-	}
+func (uc *ContactUseCase) CreateContact(ctx context.Context, firstName, lastName, phoneNumber string) (*contact.Contact, error) {
+	newContact, err := contact.NewContact(firstName, lastName, phoneNumber)
 
-	err := uc.contactRepo.CreateContact(ctx, newContact)
+	err = uc.contactRepo.CreateContact(ctx, newContact)
 	if err != nil {
 		return nil, err
 	}

@@ -39,7 +39,8 @@ func (ch *ContactHTTPDelivery) CreateContactHandler(w http.ResponseWriter, r *ht
 	defer cancel()
 
 	var requestData struct {
-		FullName    string `json:"full_name"`
+		FirstName   string `json:"first_name"`
+		LastName    string `json:"last_name"`
 		PhoneNumber string `json:"phone_number"`
 	}
 
@@ -49,7 +50,7 @@ func (ch *ContactHTTPDelivery) CreateContactHandler(w http.ResponseWriter, r *ht
 		return
 	}
 
-	newContact, err := ch.contactUC.CreateContact(ctx, requestData.FullName, requestData.PhoneNumber)
+	newContact, err := ch.contactUC.CreateContact(ctx, requestData.FirstName, requestData.LastName, requestData.PhoneNumber)
 	if err != nil {
 		log.Println("Error creating contact:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)

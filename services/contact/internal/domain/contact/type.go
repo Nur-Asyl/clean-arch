@@ -12,7 +12,7 @@ type Contact struct {
 	PhoneNumber string
 }
 
-func NewContact(id int, firstName string, lastName string, phoneNumber string) (*Contact, error) {
+func NewContact(firstName string, lastName string, phoneNumber string) (*Contact, error) {
 
 	match, _ := regexp.MatchString("^[0-9]+$", phoneNumber)
 	if !match {
@@ -22,7 +22,6 @@ func NewContact(id int, firstName string, lastName string, phoneNumber string) (
 	fullName := fmt.Sprintf("%s %s", firstName, lastName)
 
 	contact := &Contact{
-		ID:          id,
 		FullName:    fullName,
 		PhoneNumber: phoneNumber,
 	}

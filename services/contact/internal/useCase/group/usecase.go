@@ -17,9 +17,7 @@ func NewGroupUseCase(contactRepo storage.Contact, groupRepo storage.Group) useCa
 }
 
 func (uc *GroupUseCase) CreateGroup(ctx context.Context, name string) (*group.Group, error) {
-	newGroup := &group.Group{
-		Name: name,
-	}
+	newGroup := group.NewGroup(name)
 
 	err := uc.groupRepo.CreateGroup(ctx, newGroup)
 	if err != nil {

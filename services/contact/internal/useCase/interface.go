@@ -7,7 +7,7 @@ import (
 )
 
 type ContactUseCase interface {
-	CreateContact(ctx context.Context, fullname, phoneNumber string) (*contact.Contact, error)
+	CreateContact(ctx context.Context, firstName, lastName, phoneNumber string) (*contact.Contact, error)
 	ReadContact(ctx context.Context, contactID int) (*contact.Contact, error)
 	UpdateContact(ctx context.Context, contactID int, fullname, phoneNumber string) error
 	DeleteContact(ctx context.Context, contactID int) error

@@ -5,9 +5,8 @@ type Group struct {
 	Name string
 }
 
-func NewGroup(id int, name string) *Group {
+func NewGroup(name string) *Group {
 	return &Group{
-		ID:   id,
 		Name: validateName(name),
 	}
 }

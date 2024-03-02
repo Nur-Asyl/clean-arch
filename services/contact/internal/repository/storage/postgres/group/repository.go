@@ -16,7 +16,7 @@ func NewGroupRepository(db *sql.DB) *GroupRepository {
 }
 
 func (r *GroupRepository) CreateGroup(ctx context.Context, group *group.Group) error {
-	_, err := r.db.ExecContext(ctx, "INSERT INTO groups (id ,name) VALUES ($1, $2)", group.ID, group.Name)
+	_, err := r.db.ExecContext(ctx, "INSERT INTO groups (name) VALUES ($1)", group.Name)
 	if err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ func (r *GroupRepository) ReadGroup(ctx context.Context, groupID int) (*group.Gr
 		}
 		return nil, err
 	}
-	return group.NewGroup(id, name), nil
+	return group.NewGroup(name), nil
 }
 
 func (r *GroupRepository) AddContactToGroup(ctx context.Context, contactID, groupID int) error {
