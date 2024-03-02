@@ -21,6 +21,16 @@ func NewContactHTTP(contactUC useCase.ContactUseCase, groupUC useCase.GroupUseCa
 	return &ContactHTTPDelivery{contactUC: contactUC, groupUC: groupUC}
 }
 
+func Trace(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+
+		next(w, r)
+
+		log.Printf("%s %s %s %v\n", r.Method, r.URL.Path, r.RemoteAddr, time.Since(start))
+	}
+}
+
 func (ch *ContactHTTPDelivery) CreateContactHandler(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), time.Second*2)
 	defer cancel()
@@ -193,14 +203,14 @@ func (d *ContactHTTPDelivery) Run(cfg *configs.Config) {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/contact/create", d.CreateContactHandler)
-	mux.HandleFunc("/contact/get", d.ReadContactHandler)
-	mux.HandleFunc("/contact/update", d.UpdateContactHandler)
-	mux.HandleFunc("/contact/delete", d.DeleteContactHandler)
+	mux.HandleFunc("/contact/create", Trace(d.CreateContactHandler))
+	mux.HandleFunc("/contact/get", Trace(d.ReadContactHandler))
+	mux.HandleFunc("/contact/update", Trace(d.UpdateContactHandler))
+	mux.HandleFunc("/contact/delete", Trace(d.DeleteContactHandler))
 
-	mux.HandleFunc("/group/create", d.CreateGroupHandler)
-	mux.HandleFunc("/group/get", d.ReadGroupHandler)
-	mux.HandleFunc("/group/addContact", d.AddContactToGroupHandler)
+	mux.HandleFunc("/group/create", Trace(d.CreateGroupHandler))
+	mux.HandleFunc("/group/get", Trace(d.ReadGroupHandler))
+	mux.HandleFunc("/group/addContact", Trace(d.AddContactToGroupHandler))
 
 	fmt.Println("Delivering... on port:", addr)
 	err := http.ListenAndServe(addr, nil)
