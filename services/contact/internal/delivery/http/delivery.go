@@ -8,7 +8,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"strconv"
+	"syscall"
 	"time"
 )
 
@@ -213,8 +216,14 @@ func (d *ContactHTTPDelivery) Run(cfg *configs.Config) {
 	mux.HandleFunc("/group/addContact", Trace(d.AddContactToGroupHandler))
 
 	fmt.Println("Delivering... on port:", addr)
-	err := http.ListenAndServe(addr, nil)
-	if err != nil {
-		log.Panic("Something up with server delivering:", err)
-	}
+	go func() {
+		err := http.ListenAndServe(addr, nil)
+		if err != nil {
+			log.Fatalf("Failed to start HTTP server: %v", err)
+		}
+	}()
+	quitCh := make(chan os.Signal, 1)
+	signal.Notify(quitCh, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
+	<-quitCh
+	log.Println("Shutting down server...")
 }
