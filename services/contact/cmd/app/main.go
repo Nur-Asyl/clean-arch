@@ -5,6 +5,7 @@ import (
 	"architecture_go/services/contact/configs"
 	"architecture_go/services/contact/internal/delivery/http"
 	postgres2 "architecture_go/services/contact/internal/repository/storage/postgres/contact"
+	contact2 "architecture_go/services/contact/internal/repository/storage/postgres/group"
 	"architecture_go/services/contact/internal/useCase/contact"
 	"architecture_go/services/contact/internal/useCase/group"
 	"log"
@@ -24,9 +25,10 @@ func main() {
 
 	log.Println("Successfully connected to database!")
 
-	contactRepo := postgres2.NewContactRepository(storage)
-	contactUseCase := contact.NewContactUseCase(&contactRepo)
-	groupUseCase := group.NewGroupUseCase(&contactRepo, &contactRepo)
+	contactRepo := postgres2.NewContactRepository(storage.DB)
+	groupRepo := contact2.NewGroupRepository(storage.DB)
+	contactUseCase := contact.NewContactUseCase(contactRepo)
+	groupUseCase := group.NewGroupUseCase(contactRepo, groupRepo)
 	delivery := http.NewContactHTTP(contactUseCase, groupUseCase)
 	delivery.Run(cfg)
 }
