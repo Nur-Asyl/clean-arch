@@ -2,50 +2,55 @@ package contact
 
 import (
 	"architecture_go/services/contact/internal/domain/contact"
-	"architecture_go/services/contact/internal/domain/group"
-	"architecture_go/services/contact/internal/useCase"
 	"architecture_go/services/contact/internal/useCase/adapters/storage"
+	"context"
+	"errors"
 )
 
 type ContactUseCase struct {
-	repo storage.Contact
+	contactRepo storage.Contact
 }
 
-func NewContactUseCase(repo storage.Contact) useCase.ContactUseCase {
-	return &ContactUseCase{repo: repo}
+func NewContactUseCase(contactRepo storage.Contact) *ContactUseCase {
+	return &ContactUseCase{
+		contactRepo: contactRepo,
+	}
 }
 
-func (c *ContactUseCase) CreateContact(firstName, lastName, phoneNumber string) (*contact.Contact, error) {
-	//TODO implement me
-	panic("implement me")
+func (uc *ContactUseCase) CreateContact(ctx context.Context, fullName, phoneNumber string) (*contact.Contact, error) {
+	newContact := &contact.Contact{
+		FullName:    fullName,
+		PhoneNumber: phoneNumber,
+	}
+
+	err := uc.contactRepo.CreateContact(ctx, newContact)
+	if err != nil {
+		return nil, err
+	}
+
+	return newContact, nil
 }
 
-func (c *ContactUseCase) GetContactByID(contactID int) (*contact.Contact, error) {
-	//TODO implement me
-	panic("implement me")
+func (uc *ContactUseCase) ReadContact(ctx context.Context, contactID int) (*contact.Contact, error) {
+	return uc.contactRepo.ReadContact(ctx, contactID)
 }
 
-func (c *ContactUseCase) UpdateContact(contactID int, firstName, lastName, phoneNumber string) error {
-	//TODO implement me
-	panic("implement me")
+func (uc *ContactUseCase) UpdateContact(ctx context.Context, contactID int, fullname, phoneNumber string) error {
+	existingContact, err := uc.contactRepo.ReadContact(ctx, contactID)
+	if err != nil {
+		return err
+	}
+
+	if existingContact == nil {
+		return errors.New("contact not found")
+	}
+
+	existingContact.FullName = fullname
+	existingContact.PhoneNumber = phoneNumber
+
+	return uc.contactRepo.UpdateContact(ctx, existingContact)
 }
 
-func (c *ContactUseCase) DeleteContact(contactID int) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c ContactUseCase) CreateGroup(name string) (*group.Group, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c *ContactUseCase) GetGroupByID(groupID int) (*group.Group, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c *ContactUseCase) AddContactToGroup(groupID, contactID int) error {
-	//TODO implement me
-	panic("implement me")
+func (uc *ContactUseCase) DeleteContact(ctx context.Context, contactID int) error {
+	return uc.contactRepo.DeleteContact(ctx, contactID)
 }

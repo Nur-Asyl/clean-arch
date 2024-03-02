@@ -24,5 +24,4 @@ func (d *ContactHTTPDelivery) Run(cfg *configs.Config) {
 	if err != nil {
 		log.Panic("Something up with server delivering")
 	}
-
 }

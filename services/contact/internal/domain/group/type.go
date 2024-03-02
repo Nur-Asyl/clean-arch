@@ -1,22 +1,20 @@
 package group
 
-import "errors"
-
 type Group struct {
 	ID   int
 	Name string
 }
 
-func NewGroup(id int, name string) (*Group, error) {
-
-	if len(name) > 250 {
-		return nil, errors.New("group name is more than the maximum length of 250 characters")
-	}
-
-	group := &Group{
+func NewGroup(id int, name string) *Group {
+	return &Group{
 		ID:   id,
-		Name: name,
+		Name: validateName(name),
 	}
+}
 
-	return group, nil
+func validateName(name string) string {
+	if len(name) > 250 {
+		name = name[:250]
+	}
+	return name
 }

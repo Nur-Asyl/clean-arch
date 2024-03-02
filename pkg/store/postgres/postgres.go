@@ -8,7 +8,7 @@ import (
 )
 
 type Storage struct {
-	db *sql.DB
+	DB *sql.DB
 }
 
 func Connect(cfg *configs.Config) (*Storage, error) {
@@ -23,9 +23,9 @@ func Connect(cfg *configs.Config) (*Storage, error) {
 		return nil, err
 	}
 
-	return &Storage{db: db}, nil
+	return &Storage{DB: db}, nil
 }
 
 func (s *Storage) Close() {
-	s.db.Close()
+	s.DB.Close()
 }

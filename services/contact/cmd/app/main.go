@@ -4,7 +4,7 @@ import (
 	"architecture_go/pkg/store/postgres"
 	"architecture_go/services/contact/configs"
 	"architecture_go/services/contact/internal/delivery/http"
-	postgres2 "architecture_go/services/contact/internal/repository/storage/postgres"
+	postgres2 "architecture_go/services/contact/internal/repository/storage/postgres/contact"
 	"architecture_go/services/contact/internal/useCase/contact"
 	"architecture_go/services/contact/internal/useCase/group"
 	"log"

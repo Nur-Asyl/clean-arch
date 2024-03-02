@@ -3,17 +3,18 @@ package useCase
 import (
 	"architecture_go/services/contact/internal/domain/contact"
 	"architecture_go/services/contact/internal/domain/group"
+	"context"
 )
 
 type ContactUseCase interface {
-	CreateContact(firstName, lastName, phoneNumber string) (*contact.Contact, error)
-	GetContactByID(contactID int) (*contact.Contact, error)
-	UpdateContact(contactID int, firstName, lastName, phoneNumber string) error
-	DeleteContact(contactID int) error
+	CreateContact(ctx context.Context, fullname, phoneNumber string) (*contact.Contact, error)
+	ReadContact(ctx context.Context, contactID int) (*contact.Contact, error)
+	UpdateContact(ctx context.Context, contactID int, fullname, phoneNumber string) error
+	DeleteContact(ctx context.Context, contactID int) error
 }
 
 type GroupUseCase interface {
-	CreateGroup(name string) (*group.Group, error)
-	GetGroupByID(groupID int) (*group.Group, error)
-	AddContactToGroup(groupID, contactID int) error
+	CreateGroup(ctx context.Context, name string) (*group.Group, error)
+	ReadGroup(ctx context.Context, groupID int) (*group.Group, error)
+	AddContactToGroup(ctx context.Context, groupID, contactID int) error
 }
